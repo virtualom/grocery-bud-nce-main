@@ -5,9 +5,12 @@ export function createSingleItem(item, { editCompleted, removeItem, setEditId })
 
   div.innerHTML = `
     <input type="checkbox" ${item.completed ? "checked" : ""} />
-    <p style="text-decoration: ${item.completed ? "line-through" : "none"}">
-      ${item.name}
-    </p>
+    <div class="item-info">
+      <p style="text-decoration: ${item.completed ? "line-through" : "none"}">
+        ${item.name}
+      </p>
+      ${item.date ? `<small class="item-date">${item.date}</small>` : ""}
+    </div>
     <button class="btn icon-btn edit-btn" type="button">
       <i class="fa-regular fa-pen-to-square"></i>
     </button>

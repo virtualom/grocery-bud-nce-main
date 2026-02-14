@@ -74,10 +74,11 @@ function render() {
 render();
 
 // Update Item Name Function
-function updateItemName(newName) {
+// Update Item Function
+function updateItemName(newName, newDate) {
   items = items.map((item) => {
     if (item.id === editId) {
-      return { ...item, name: newName };
+      return { ...item, name: newName, date: newDate };
     }
     return item;
   });
@@ -134,9 +135,11 @@ function generateId() {
 }
 
 // Add Item Function
-function addItem(itemName) {
+// Add Item Function
+function addItem(itemName, itemDate) {
   const newItem = {
     name: itemName,
+    date: itemDate,
     completed: false,
     id: generateId(),
   };

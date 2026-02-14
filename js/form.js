@@ -9,34 +9,42 @@ export function createForm(editId, itemToEdit, { addItem, updateItemName, showAl
       <input
         type="text"
         class="form-input"
-        placeholder="e.g. eggs"
+        placeholder="e.g. bread, milk"
         value="${itemToEdit ? itemToEdit.name : ""}"
       />
+      <input
+        type="date"
+        class="form-input"
+        placeholder="mm/dd/yyyy"
+        value="${itemToEdit && itemToEdit.date ? itemToEdit.date : ""}"
+      />
       <button type="submit" class="btn">
-        ${editId ? "edit item" : "add item"}
+        ${editId ? "edit item" : "Add Item"}
       </button>
     </div>
   `;
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const input = form.querySelector(".form-input");
-    const value = input.value.trim();
+    const inputs = form.querySelectorAll(".form-input");
+    const name = inputs[0].value.trim();
+    const date = inputs[1].value;
 
-    if (!value) {
-      showAlert("please provide value", "danger");
+    if (!name || !date) {
+      showAlert("please provide value and date", "danger");
       return;
     }
 
 
     // added conditions
     if (editId) {
-      updateItemName(value);
+      updateItemName(name, date);
     } else {
-      addItem(value);
+      addItem(name, date);
     }
 
-    input.value = "";
+    inputs[0].value = "";
+    inputs[1].value = "";
   });
 
   return form;

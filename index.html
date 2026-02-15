@@ -6,16 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grocery Bud</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="css/global.css" />
-  <link rel="stylesheet" href="css/single-item.css" />
-  <link rel="stylesheet" href="css/items.css" />
-  <link rel="stylesheet" href="css/form.css" />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -29,14 +19,22 @@
       --radius: 12px;
     }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: var(--primary-gradient);
+      background-attachment: fixed;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      margin: 0;
+      align-items: flex-start;
+      /* Changed from center to flex-start for scrollability */
+      padding: 2rem 0;
       color: var(--text-color);
     }
 
@@ -48,14 +46,12 @@
       border-radius: var(--radius);
       border: var(--glass-border);
       width: 90vw;
-      max-width: 35rem;
-      margin: 0;
+      max-width: 40rem;
+      /* Increased slightly for better fit */
       padding: 2.5rem;
       transition: transform 0.3s ease;
-    }
-
-    .section-center:hover {
-      transform: translateY(-5px);
+      overflow: hidden;
+      /* Prevent overflow */
     }
 
     h2 {
@@ -70,22 +66,28 @@
 
     .form-control {
       display: flex;
+      flex-wrap: wrap;
+      /* Allow wrapping on small screens */
+      gap: 0.5rem;
       justify-content: center;
-      align-items: center;
       margin-bottom: 1.5rem;
     }
 
     .form-input {
       background: #f7fafc;
       border: 2px solid #e2e8f0;
-      border-radius: 50px 0 0 50px;
-      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      /* Standardized radius */
+      padding: 0.75rem 1rem;
       font-size: 1rem;
-      flex: 1 0 auto;
+      flex: 1 1 150px;
+      /* Allow growing and shrinking */
       color: var(--text-color);
       font-family: inherit;
       transition: border-color 0.3s ease;
       outline: none;
+      min-width: 0;
+      /* Fix flex overflow */
     }
 
     .form-input:focus {
@@ -97,7 +99,7 @@
       background: var(--accent-color);
       color: white;
       border: 2px solid var(--accent-color);
-      border-radius: 0 50px 50px 0;
+      border-radius: 8px;
       padding: 0.75rem 1.5rem;
       text-transform: capitalize;
       font-size: 1rem;
@@ -107,6 +109,7 @@
       letter-spacing: 1px;
       font-weight: 500;
       display: inline-block;
+      white-space: nowrap;
     }
 
     .submit-btn:hover,
@@ -139,9 +142,26 @@
 
     .grocery-container {
       margin-top: 2rem;
+      max-height: 450px;
+      /* Contain the list */
+      overflow-y: auto;
+      /* Enable scroll */
+      padding-right: 0.5rem;
+      /* Space for scrollbar */
     }
 
-    .grocery-item {
+    /* Custom Scrollbar */
+    .grocery-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .grocery-container::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 10px;
+    }
+
+    .grocery-item,
+    .single-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -151,12 +171,33 @@
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       transition: all 0.2s ease;
+      gap: 1rem;
     }
 
-    .grocery-item:hover {
+    .item-info {
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .item-info p {
+      margin: 0;
+      font-weight: 500;
+      text-transform: capitalize;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-date {
+      color: #64748b;
+      font-size: 0.8rem;
+    }
+
+    .grocery-item:hover,
+    .single-item:hover {
       background: #fdfdfd;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
-      transform: scale(1.01);
+      transform: translateY(-2px);
     }
 
     .edit-btn,
@@ -174,6 +215,7 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.2s;
+      flex-shrink: 0;
     }
 
     .edit-btn {
@@ -214,30 +256,12 @@
       color: white;
     }
 
-    .single-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: white;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      margin-bottom: 0.75rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .single-item p {
-      margin: 0;
-      flex-grow: 1;
-      padding-left: 0.5rem;
-      font-weight: 500;
-      text-transform: capitalize;
-    }
-
     .single-item input[type="checkbox"] {
       width: 18px;
       height: 18px;
       accent-color: var(--accent-color);
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .date-time {
